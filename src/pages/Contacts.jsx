@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ContentWrapper from "../components/layout/content-wrapper";
 import Headline from "../components/ui/headline";
 import Box from "@mui/material/Box";
@@ -21,86 +21,78 @@ import AddContactDialog from "../components/ui/add-contact-dialog";
 const baseUrl = "http://localhost:4000/contacts";
 
 const Contacts = () => {
-    // contacts state
+    // State for contacts data
     const [contacts, setContacts] = useState([]);
-    const [filteredContacts, setFilteredContacts] = useState(contacts);
-    // state for reloading the data
-    const [reload, setReload] = useState(false);
-    // state for loading and error handling
+    // State for loading status
     const [loading, setLoading] = useState(false);
+    // State for error status
     const [error, setError] = useState(false);
-    // state for search input
+    // State for search input value
     const [searchValue, setSearchValue] = useState("");
-    // state for pagination
+    // State for pagination
     const [page, setPage] = useState(1);
-    // state for add new contact dialog
+    // State for showing add contact dialog
     const [showDialog, setShowDialog] = useState(false);
 
-    // define the number of items per page
+    // Define number of items per page
     const itemsPerPage = 20;
-    // define the range of contacts to display for pagination
+    // Calculate start index for pagination
     const startIndex = (page - 1) * itemsPerPage;
+    // Calculate end index for pagination
     const endIndex = startIndex + itemsPerPage;
-    const displayedContacts = filteredContacts.slice(startIndex, endIndex);
 
-    // fetch contacts from the server
-    useEffect(() => {
+    // Function to fetch contacts from the server
+    const fetchContacts = useCallback(() => {
         setLoading(true);
         setError(false);
-        setReload(false);
 
         fetch(baseUrl)
-            .then((res) => {
-                return res.json();
-            })
+            .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setLoading(false);
                 setContacts(data);
-                setFilteredContacts(data);
             })
             .catch((err) => {
                 console.log(err);
                 setError(true);
                 setLoading(false);
             });
-    }, [reload]);
+    }, []);
 
-    // handle page change
-    const handlePageChange = (event, value) => {
+    // Fetch contacts when component mounts or reloads
+    useEffect(() => {
+        fetchContacts();
+    }, [fetchContacts]);
+
+    // Handler for page change in pagination
+    const handlePageChange = useCallback((event, value) => {
         setPage(value);
-    };
+    }, []);
 
-    // handle search input change
-    const handleInputChange = (event) => {
+    // Handler for search input change
+    const handleInputChange = useCallback((event) => {
         const value = event.target.value;
         setSearchValue(value);
+    }, []);
 
-        const filteredEntries = contacts.filter((contact) =>
-            contact.name.toLowerCase().includes(value.toLowerCase())
-        );
-
-        setFilteredContacts(filteredEntries);
-    };
-
-    // handle add contact dialog
-    const handleAddContact = () => {
+    // Handler for toggling add contact dialog
+    const handleAddContact = useCallback(() => {
         setShowDialog(!showDialog);
-    };
+    }, [showDialog]);
 
-    // function to update contacts after adding a new contact
-    const updateContacts = () => {
-        setReload(true);
-    };
+    // Function to update contacts after adding a new contact
+    const updateContacts = useCallback(() => {
+        fetchContacts();
+    }, [fetchContacts]);
+
+    // Filter contacts based on search input value
+    const filteredContacts = contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
 
     return (
         <ContentWrapper>
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Headline title={"Contacts"} />
                 <Box sx={{ mb: 4, pl: 2, pt: 2 }}>
                     <Tooltip title="Add a new contact.">
@@ -159,9 +151,11 @@ const Contacts = () => {
                     px: 0.5,
                 }}
             >
-                {displayedContacts.map((contact, id) => (
-                    <ListEntry contact={contact} key={id} />
-                ))}
+                {filteredContacts
+                    .slice(startIndex, endIndex)
+                    .map((contact, id) => (
+                        <ListEntry contact={contact} key={id} />
+                    ))}
             </List>
             {!loading && (
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
