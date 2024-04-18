@@ -4,13 +4,13 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/layout/Navigation";
-import Footer from "./components/layout/Footer";
+import Navbar from "./components/layout/navigation";
+import Footer from "./components/layout/footer";
 
-import Index from "./pages/Index";
-import Contacts from "./pages/Contacts";
-import Imprint from "./pages/Imprint";
-import Privacy from "./pages/Privacy";
+import Index from "./pages";
+import Contacts from "./pages/contacts";
+import Imprint from "./pages/imprint";
+import Privacy from "./pages/privacy";
 
 function App() {
     const [mode, setMode] = useState("dark");
@@ -20,6 +20,11 @@ function App() {
             createTheme({
                 palette: {
                     mode,
+                    accent: {
+                        main: "#20DDB3",
+                        light: "#20DDB3",
+                        dark: "#20DDB3",
+                    },
                 },
             }),
         [mode]

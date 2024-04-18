@@ -53,8 +53,14 @@ const Navigation = (props) => {
                 <Toolbar disableGutters>
                     <Link
                         component={RouterLink}
+                        color="inherit"
                         to="/"
-                        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+                        sx={{
+                            display: { xs: "none", md: "flex" },
+                            mr: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
                     >
                         <img style={{ width: 50 }} src={logo} alt="" />
                     </Link>
