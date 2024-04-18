@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -9,8 +9,34 @@ import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CommonDialog from "./common-dialog";
+import AddContactDialog from "./add-contact-dialog";
 
-const ListEntry = ({ contact }) => {
+const baseUrl = "http://localhost:4000/contacts";
+
+const ListEntry = ({ contact, updateContacts, handleAddContact }) => {
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+
+    const deleteEntry = (action) => {
+        setOpenDeleteDialog(false);
+
+        if (action) {
+            fetch(baseUrl + "/" + contact.id, {
+                method: "DELETE",
+            })
+                .then((response) => response.json())
+                .then(() => console.log("User deleted"));
+
+            // TODO: fix update list after delete
+            updateContacts();
+        }
+    };
+
+    const updateEntry = () => {
+        console.log("Update entry");
+    };
+
     return (
         <ListItem
             alignItems="flex-start"
@@ -52,15 +78,40 @@ const ListEntry = ({ contact }) => {
                 </IconButton>
             </Tooltip>
             <Tooltip title="edit phone number">
-                <IconButton color="accent">
+                <IconButton
+                    color="accent"
+                    onClick={() => setOpenEditDialog(true)}
+                >
                     <EditNoteIcon />
                 </IconButton>
             </Tooltip>
             <Tooltip title="delete phone number">
-                <IconButton color="error">
+                <IconButton
+                    color="error"
+                    onClick={() => setOpenDeleteDialog(true)}
+                >
                     <DeleteOutlineIcon />
                 </IconButton>
             </Tooltip>
+            {openDeleteDialog && (
+                <CommonDialog
+                    open={openDeleteDialog}
+                    id={"warning"}
+                    title={"Delete"}
+                    text={"Do you really want to delete the entry?"}
+                    confirmText={"Delete"}
+                    denyText={"Close"}
+                    confirmAction={deleteEntry}
+                />
+            )}
+            {openEditDialog && (
+                <AddContactDialog
+                    handleAddContact={handleAddContact}
+                    updateContacts={updateContacts}
+                    type={"edit"}
+                    entry={contact}
+                />
+            )}
         </ListItem>
     );
 };

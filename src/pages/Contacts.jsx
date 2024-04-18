@@ -33,6 +33,8 @@ const Contacts = () => {
     const [page, setPage] = useState(1);
     // State for showing add contact dialog
     const [showDialog, setShowDialog] = useState(false);
+    // State for dialog type
+    const [dialogType, setDialogType] = useState("");
 
     // Define number of items per page
     const itemsPerPage = 20;
@@ -78,6 +80,10 @@ const Contacts = () => {
     // Handler for toggling add contact dialog
     const handleAddContact = useCallback(() => {
         setShowDialog(!showDialog);
+
+        if (dialogType === "") {
+            setDialogType("add");
+        }
     }, [showDialog]);
 
     // Function to update contacts after adding a new contact
@@ -154,7 +160,12 @@ const Contacts = () => {
                 {filteredContacts
                     .slice(startIndex, endIndex)
                     .map((contact, id) => (
-                        <ListEntry contact={contact} key={id} />
+                        <ListEntry
+                            contact={contact}
+                            key={id}
+                            updateContacts={updateContacts}
+                            handleAddContact={handleAddContact}
+                        />
                     ))}
             </List>
             {!loading && (
@@ -175,6 +186,7 @@ const Contacts = () => {
                 <AddContactDialog
                     handleAddContact={handleAddContact}
                     updateContacts={updateContacts}
+                    type={dialogType}
                 />
             )}
         </ContentWrapper>

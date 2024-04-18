@@ -9,15 +9,32 @@ import TextField from "@mui/material/TextField";
 
 const baseUrl = "http://localhost:4000/contacts";
 
-const AddContactDialog = ({ handleAddContact, updateContacts }) => {
+const AddContactDialog = ({
+    handleAddContact,
+    updateContacts,
+    type,
+    entry = null,
+}) => {
     const [open, setOpen] = useState(true);
-    const [contact, setContact] = useState({ name: "", phone: "" });
+    const [contact, setContact] = useState(
+        entry
+            ? { name: entry.name, phone: entry.phone }
+            : { name: "", phone: "" }
+    );
 
     const regex = /\d{4}\/\d{8}/;
 
     const handleClose = () => {
         setOpen(false);
         handleAddContact();
+    };
+
+    const handleSubmit = () => {
+        if (type === "add") {
+            addNewContact();
+        } else if (type === "edit") {
+            updateContact();
+        }
     };
 
     const addNewContact = () => {
@@ -40,7 +57,7 @@ const AddContactDialog = ({ handleAddContact, updateContacts }) => {
                 body: JSON.stringify(contact),
             })
                 .then((res) => res.json())
-                .then((newContact) => {
+                .then(() => {
                     updateContacts();
                     handleClose();
                 })
@@ -49,6 +66,8 @@ const AddContactDialog = ({ handleAddContact, updateContacts }) => {
                 );
         }
     };
+
+    const updateContact = () => {};
 
     return (
         <Dialog open={open} onClose={handleClose}>
@@ -102,7 +121,7 @@ const AddContactDialog = ({ handleAddContact, updateContacts }) => {
                 <Button onClick={handleClose} color="accent">
                     Cancel
                 </Button>
-                <Button type="submit" onClick={addNewContact} color="accent">
+                <Button type="submit" onClick={handleSubmit} color="accent">
                     Add contact
                 </Button>
             </DialogActions>
