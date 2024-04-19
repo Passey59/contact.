@@ -2,9 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import ContentWrapper from "../components/layout/content-wrapper";
 import Headline from "../components/ui/headline";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
@@ -16,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import ListEntry from "../components/ui/list-entry";
+import SearchInput from "../components/ui/search-input";
 import ProcessContactDialog from "../components/ui/process-contact-dialog";
 
 const baseUrl = "http://localhost:4000/contacts";
@@ -100,41 +98,17 @@ const Contacts = () => {
         <ContentWrapper>
             <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Headline title={"Contacts"} />
-                <Box sx={{ mb: 4, pl: 2, pt: 2 }}>
+                <Box sx={{ mb: 4, pl: 2, pt: { md: 2, xs: 1 } }}>
                     <Tooltip title="Add a new contact.">
                         <IconButton color="accent" onClick={handleAction}>
-                            <AddCircleOutlineIcon sx={{ fontSize: 60 }} />
+                            <AddCircleOutlineIcon
+                                sx={{ fontSize: { md: 60, xs: 45 } }}
+                            />
                         </IconButton>
                     </Tooltip>
                 </Box>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <TextField
-                    fullWidth
-                    id="search-input"
-                    placeholder="Search ..."
-                    variant="outlined"
-                    color="mode"
-                    value={searchValue}
-                    onChange={handleInputChange}
-                    sx={{
-                        px: 0.5,
-                        "& .MuiOutlinedInput-root": {
-                            borderRadius: "20px",
-                        },
-                    }}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                        style: {
-                            borderRadius: "50px",
-                        },
-                    }}
-                />
-            </Box>
+            <SearchInput value={searchValue} onChange={handleInputChange} />
             {loading && (
                 <Box sx={{ width: "100%", mt: 6, px: 1, textAlign: "center" }}>
                     <LinearProgress color="accent" />

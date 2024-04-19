@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const baseUrl = "http://localhost:4000/contacts";
 
@@ -21,6 +23,7 @@ const ProcessContactDialog = ({
             ? { name: entry.name, phone: entry.phone }
             : { name: "", phone: "" }
     );
+    const [errorMessage, setErrorMessage] = useState("");
 
     const regex = /\d{4}\/\d{8}/;
 
@@ -30,14 +33,16 @@ const ProcessContactDialog = ({
     };
 
     const processContact = () => {
+        setErrorMessage("");
+
         if (contact.name === "" || contact.phone === "") {
-            alert("Please fill out all fields");
+            setErrorMessage("Please fill out all fields.");
         } else if (contact.name.length < 2 || contact.phone.length < 10) {
-            alert(
+            setErrorMessage(
                 "Please enter a valid name and phone number. Name must be longer than 2 characters. Phone number must be in the following format: 0123/45678901"
             );
         } else if (!regex.test(contact.phone)) {
-            alert(
+            setErrorMessage(
                 "Please enter a valid phone number. Phone number must be in the following format: 0123/45678901"
             );
         } else {
@@ -84,6 +89,17 @@ const ProcessContactDialog = ({
                 <DialogContentText>
                     Here you can add a new contact to your contact list.
                 </DialogContentText>
+                {errorMessage !== "" && (
+                    <Box sx={{ mt: 2 }}>
+                        <Typography
+                            variant="body1"
+                            fontWeight={600}
+                            color="error"
+                        >
+                            {errorMessage}
+                        </Typography>
+                    </Box>
+                )}
                 <form
                     onSubmit={(event) => {
                         event.preventDefault();
