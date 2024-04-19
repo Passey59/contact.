@@ -16,7 +16,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import ListEntry from "../components/ui/list-entry";
-import AddContactDialog from "../components/ui/add-contact-dialog";
+import ProcessContactDialog from "../components/ui/process-contact-dialog";
 
 const baseUrl = "http://localhost:4000/contacts";
 
@@ -78,7 +78,7 @@ const Contacts = () => {
     }, []);
 
     // Handler for toggling add contact dialog
-    const handleAddContact = useCallback(() => {
+    const handleAction = useCallback(() => {
         setShowDialog(!showDialog);
 
         if (dialogType === "") {
@@ -102,7 +102,7 @@ const Contacts = () => {
                 <Headline title={"Contacts"} />
                 <Box sx={{ mb: 4, pl: 2, pt: 2 }}>
                     <Tooltip title="Add a new contact.">
-                        <IconButton color="accent" onClick={handleAddContact}>
+                        <IconButton color="accent" onClick={handleAction}>
                             <AddCircleOutlineIcon sx={{ fontSize: 60 }} />
                         </IconButton>
                     </Tooltip>
@@ -164,7 +164,6 @@ const Contacts = () => {
                             contact={contact}
                             key={id}
                             updateContacts={updateContacts}
-                            handleAddContact={handleAddContact}
                         />
                     ))}
             </List>
@@ -183,8 +182,8 @@ const Contacts = () => {
                 </Box>
             )}
             {showDialog && (
-                <AddContactDialog
-                    handleAddContact={handleAddContact}
+                <ProcessContactDialog
+                    handleAction={handleAction}
                     updateContacts={updateContacts}
                     type={dialogType}
                 />

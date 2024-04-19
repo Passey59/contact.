@@ -10,11 +10,11 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CommonDialog from "./common-dialog";
-import AddContactDialog from "./add-contact-dialog";
+import ProcessContactDialog from "./process-contact-dialog";
 
 const baseUrl = "http://localhost:4000/contacts";
 
-const ListEntry = ({ contact, updateContacts, handleAddContact }) => {
+const ListEntry = ({ contact, updateContacts }) => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
 
@@ -33,8 +33,8 @@ const ListEntry = ({ contact, updateContacts, handleAddContact }) => {
         }
     };
 
-    const updateEntry = () => {
-        console.log("Update entry");
+    const handleEditDialog = () => {
+        setOpenEditDialog(false);
     };
 
     return (
@@ -105,8 +105,8 @@ const ListEntry = ({ contact, updateContacts, handleAddContact }) => {
                 />
             )}
             {openEditDialog && (
-                <AddContactDialog
-                    handleAddContact={handleAddContact}
+                <ProcessContactDialog
+                    handleAction={handleEditDialog}
                     updateContacts={updateContacts}
                     type={"edit"}
                     entry={contact}
