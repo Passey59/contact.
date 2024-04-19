@@ -15,6 +15,9 @@ import { Box } from "@mui/material";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 
+const logo = "src/assets/logo.png";
+
+// define pages for navigation
 const pages = [
     {
         name: "Contacts",
@@ -29,8 +32,6 @@ const pages = [
         path: "/privacy",
     },
 ];
-
-const logo = "src/assets/logo.png";
 
 const Navigation = (props) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -73,7 +74,6 @@ const Navigation = (props) => {
                     >
                         <IconButton
                             size="large"
-                            aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}

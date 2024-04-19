@@ -17,21 +17,26 @@ const ProcessContactDialog = ({
     type,
     entry = null,
 }) => {
+    // State for dialog open status
     const [open, setOpen] = useState(true);
+    // State for contact data
     const [contact, setContact] = useState(
         entry
             ? { name: entry.name, phone: entry.phone }
             : { name: "", phone: "" }
     );
+    // State for error message
     const [errorMessage, setErrorMessage] = useState("");
 
     const regex = /\d{4}\/\d{8}/;
 
+    // handle close dialog
     const handleClose = () => {
         setOpen(false);
         handleAction();
     };
 
+    // add or update contact
     const processContact = () => {
         setErrorMessage("");
 
@@ -79,6 +84,30 @@ const ProcessContactDialog = ({
                         console.error("Error adding contact:", error)
                     );
             }
+        }
+    };
+
+    const phoneInputChecker = (e) => {
+        const { value } = e.target;
+        // Remove non-numeric characters
+        const numericValue = value.replace(/\D/g, "");
+        // Check if a slash should be inserted after the fourth digit
+        const formattedValue = numericValue.replace(/^(\d{4})(\d*)$/, "$1/$2");
+        // Update the contact phone number
+        setContact({ ...contact, phone: formattedValue });
+    };
+
+    const phoneInputHelper = (e) => {
+        const { value, selectionStart } = e.target;
+        // Check if the user is trying to delete the slash
+        if (e.key === "Backspace" && value[selectionStart - 1] === "/") {
+            e.preventDefault();
+            // Remove the slash from the value
+            const newValue =
+                value.slice(0, selectionStart - 1) +
+                value.slice(selectionStart);
+            // Update the contact phone number
+            setContact({ ...contact, phone: newValue });
         }
     };
 
@@ -135,9 +164,13 @@ const ProcessContactDialog = ({
                         value={contact.phone}
                         helperText="Please enter the number in the following format:
                         0123/24984023."
-                        onChange={(e) =>
-                            setContact({ ...contact, phone: e.target.value })
-                        }
+                        onChange={(e) => phoneInputChecker(e)}
+                        onKeyDown={(e) => phoneInputHelper(e)}
+                        inputProps={{
+                            inputMode: "numeric",
+                            pattern: "[0-9]*",
+                            maxLength: 13, // Maximum length including the "/" character
+                        }}
                     />
                 </form>
             </DialogContent>

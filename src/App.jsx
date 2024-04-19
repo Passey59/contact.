@@ -4,17 +4,19 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/layout/navigation";
+import Navigation from "./components/layout/navigation";
 import Footer from "./components/layout/footer";
 
-import Index from "./pages";
+import Index from "./pages/index";
 import Contacts from "./pages/contacts";
 import Imprint from "./pages/imprint";
 import Privacy from "./pages/privacy";
 
 function App() {
+    // define mode state, default is dark
     const [mode, setMode] = useState("dark");
 
+    // define theme
     const theme = useMemo(
         () =>
             createTheme({
@@ -30,6 +32,7 @@ function App() {
         [mode]
     );
 
+    // function to toggle mode
     const toggleMode = () => {
         setMode(mode === "light" ? "dark" : "light");
     };
@@ -38,7 +41,10 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
-                <Navbar toggleMode={toggleMode} color={theme.palette.mode} />
+                <Navigation
+                    toggleMode={toggleMode}
+                    color={theme.palette.mode}
+                />
                 <Routes>
                     <Route key="index" exact path="/" element={<Index />} />
                     <Route
