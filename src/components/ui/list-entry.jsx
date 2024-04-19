@@ -25,11 +25,11 @@ const ListEntry = ({ contact, updateContacts }) => {
             fetch(baseUrl + "/" + contact.id, {
                 method: "DELETE",
             })
-                .then((response) => response.json())
-                .then(() => console.log("User deleted"));
-
-            // TODO: fix update list after delete
-            updateContacts();
+                .then((res) => res.json())
+                .then(() => {
+                    console.log("Contact deleted");
+                    updateContacts();
+                });
         }
     };
 
