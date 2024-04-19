@@ -1,5 +1,7 @@
 # contact.
 
+Just a small phone book project.
+
 ## Setup Project
 
 1. Open a Terminal and type `npm i` to install the project dependencies.
