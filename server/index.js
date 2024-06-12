@@ -1,6 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { readFileSync, write, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -8,6 +8,7 @@ import { readFileSync, write, writeFileSync } from "fs";
 
 let contactsData;
 let jsonData;
+const file = "./DB.json";
 
 const typeDefs = `
 type Contact {
@@ -32,7 +33,6 @@ const resolvers = {
   Query: {
     // return all books
     contacts: async () => {
-      const file = "./DB.json";
       const data = await readFileSync(file);
 
       console.log("data > ", JSON.parse(data));
