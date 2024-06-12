@@ -599,41 +599,6 @@
       "name": "Kiyan Ferreira",
       "phone": "0171/33603053",
       "id": "f662"
-    },
-    {
-      "id": "0112",
-      "variables": {},
-      "query": "{\n  contacts {\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "ee8f",
-      "variables": {},
-      "query": "{\n  contacts {\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "3022",
-      "variables": {},
-      "query": "{\n  contacts {\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "97ee",
-      "variables": {},
-      "query": "{\n  contacts {\n    id\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "0262",
-      "variables": {},
-      "query": "{\n  contacts {\n    id\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "b62a",
-      "variables": {},
-      "query": "{\n  contacts {\n    id\n    name\n    phone\n    __typename\n  }\n}"
-    },
-    {
-      "id": "1a0e",
-      "variables": {},
-      "query": "{\n  contacts {\n    id\n    name\n    phone\n    __typename\n  }\n}"
     }
   ]
 }
